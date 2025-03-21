@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'home_screen.dart';
@@ -10,12 +11,23 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool _isMounted = true;
+
   @override
   void initState() {
     super.initState();
+
     Future.delayed(const Duration(seconds: 3), () {
-      Get.off(() => const HomeScreen()); // Navigate after 3s
+      if (_isMounted) {
+        Get.off(() => const HomeScreen());
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    _isMounted = false; // Prevents navigation after dispose
+    super.dispose();
   }
 
   @override
